@@ -1,0 +1,39 @@
+-- ./gradlew generateDebugRecipesDatabaseInterface
+
+CREATE TABLE Recipes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT
+);
+
+CREATE TABLE Ingredients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  recipeId INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  amount REAL NOT NULL,
+  unit TEXT NOT NULL,
+  FOREIGN KEY (recipeId) REFERENCES Recipes(id) ON DELETE CASCADE
+);
+
+selectAllRecipes:
+SELECT * FROM Recipes;
+
+selectIngredientsForRecipe:
+SELECT * FROM Ingredients
+WHERE recipeId = ?;
+
+insertRecipe:
+INSERT INTO Recipes (name, description)
+VALUES (?, ?);
+
+insertIngredient:
+INSERT INTO Ingredients (recipeId, name, amount, unit)
+VALUES (?, ?, ?, ?);
+
+deleteRecipe:
+DELETE FROM Recipes
+WHERE id = ?;
+
+-- do testow
+deleteAllRecipes:
+DELETE FROM Recipes;
