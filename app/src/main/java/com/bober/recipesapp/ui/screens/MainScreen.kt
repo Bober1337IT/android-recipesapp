@@ -59,13 +59,25 @@ fun MainScreen(
                             }
                             Column {
                                 IconButton(
-                                    onClick = { dropDownMenuExpanded = !dropDownMenuExpanded },
-                                    modifier = Modifier.padding(8.dp)
+                                    onClick = {
+                                        if (deleteRecipeToggle) {
+                                            deleteRecipeToggle = false
+                                        } else {
+                                            dropDownMenuExpanded = !dropDownMenuExpanded
+                                        }
+                                    }, modifier = Modifier.padding(8.dp)
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = "More Options Icon"
-                                    )
+                                    if (deleteRecipeToggle) {
+                                        Icon(
+                                            imageVector = Icons.Default.Clear,
+                                            contentDescription = "Cancel"
+                                        )
+                                    } else {
+                                        Icon(
+                                            imageVector = Icons.Default.MoreVert,
+                                            contentDescription = "More Options Icon"
+                                        )
+                                    }
                                 }
                                 DropdownMenu(
                                     expanded = dropDownMenuExpanded,

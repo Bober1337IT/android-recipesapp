@@ -24,7 +24,8 @@ fun AddRecipeDialog(
             TextField(
                 value = recipeName,
                 onValueChange = onNameChange,
-                label = { Text("Recipe name") }
+                label = { Text("Recipe name") },
+                singleLine = true,
             )
         },
         confirmButton = {
