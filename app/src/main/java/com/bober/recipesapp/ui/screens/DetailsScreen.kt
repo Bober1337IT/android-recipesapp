@@ -24,20 +24,19 @@ import com.bober.recipesapp.MyRecipesViewModel
 import com.bober.recipesapp.ui.theme.RecipesAppTheme
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Adb
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    viewModel: MyRecipesViewModel, RecipeId: Int?, onBack: () -> Unit
+    viewModel: MyRecipesViewModel, recipeId: Int?, onBack: () -> Unit
 ) {
     val state by viewModel.state
 
-    LaunchedEffect(RecipeId) {
-        RecipeId?.let {
+    LaunchedEffect(recipeId) {
+        recipeId?.let {
             viewModel.loadIngredients(it.toLong())
         }
     }
