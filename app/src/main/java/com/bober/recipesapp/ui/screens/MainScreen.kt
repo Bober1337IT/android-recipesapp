@@ -70,45 +70,38 @@ fun MainScreen(
                                 DropdownMenu(
                                     expanded = dropDownMenuExpanded,
                                     onDismissRequest = { dropDownMenuExpanded = false },
-                                    modifier = Modifier
-                                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
                                 ) {
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            dropDownMenuExpanded = false
-                                            addRecipeDialogVisible = true
-                                        },
-                                        text = {
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Add,
-                                                    contentDescription = "Add Icon"
-                                                )
-                                                Text("Add")
-                                            }
+                                    DropdownMenuItem(onClick = {
+                                        dropDownMenuExpanded = false
+                                        addRecipeDialogVisible = true
+                                    }, text = {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Add,
+                                                contentDescription = "Add Icon"
+                                            )
+                                            Text("Add")
                                         }
-                                    )
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            deleteRecipeToggle = !deleteRecipeToggle
-                                            dropDownMenuExpanded = false
-                                        },
-                                        text = {
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Delete,
-                                                    contentDescription = "Delete Icon"
-                                                )
-                                                Text("Delete")
-                                            }
+                                    })
+                                    DropdownMenuItem(onClick = {
+                                        deleteRecipeToggle = !deleteRecipeToggle
+                                        dropDownMenuExpanded = false
+                                    }, text = {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Delete,
+                                                contentDescription = "Delete Icon"
+                                            )
+                                            Text("Delete")
                                         }
-                                    )
+                                    })
                                 }
                             }
                         }
@@ -208,8 +201,7 @@ fun MainScreen(
                         }
                         addRecipeDialogVisible = false
                         recipeName = ""
-                    }
-                )
+                    })
             }
         }
     }

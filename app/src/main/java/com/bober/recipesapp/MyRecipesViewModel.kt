@@ -82,7 +82,6 @@ class MyRecipesViewModel internal constructor(private val database: Database) {
             loadRecipes()
         }
     }
-
 }
 
 data class RecipesScreenState(

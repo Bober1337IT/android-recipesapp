@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.bober.recipesapp.MyRecipesViewModel
 import com.bober.recipesapp.navigation.Navigation
-import com.project.myrecipes.ui.screens.DetailScreen
+import com.bober.recipesapp.ui.screens.DetailScreen
 
 internal fun NavGraphBuilder.addDetailsScreen(viewModel: MyRecipesViewModel,controller: NavController) {
     composable(
