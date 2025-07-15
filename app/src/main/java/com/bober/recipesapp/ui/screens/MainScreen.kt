@@ -19,6 +19,7 @@ import com.bober.recipesapp.ui.theme.RecipesAppTheme
 import kotlinx.coroutines.delay
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material.icons.filled.*
+import com.bober.recipesapp.ui.alertdialogs.AddRecipeDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -192,6 +193,23 @@ fun MainScreen(
                     deleteRecipeDialogVisible = false
                     deleteRecipeToggle = false
                 })
+            }
+            if (addRecipeDialogVisible) {
+                AddRecipeDialog(
+                    recipeName = recipeName,
+                    onNameChange = { recipeName = it },
+                    onDismiss = {
+                        addRecipeDialogVisible = false
+                        recipeName = ""
+                    },
+                    onConfirm = {
+                        if (recipeName.isNotBlank()) {
+                            viewModel.addRecipe(recipeName)
+                        }
+                        addRecipeDialogVisible = false
+                        recipeName = ""
+                    }
+                )
             }
         }
     }

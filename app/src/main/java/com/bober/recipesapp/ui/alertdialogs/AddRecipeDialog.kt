@@ -8,27 +8,27 @@ import androidx.compose.material3.TextField
 
 @Composable
 fun AddRecipeDialog(
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
     recipeName: String,
+    onNameChange: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
 ) {
-    var recipeName = recipeName
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Add new recipe") },
         text = {
             TextField(value = recipeName,
-                onValueChange = { recipeName = it },
-                label = { Text("Section Name") })
+                onValueChange = onNameChange,
+                label = { Text("Recipe name") })
         },
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("Yes")
+                Text("Add")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("No")
+                Text("Cancel")
             }
         }
     )
