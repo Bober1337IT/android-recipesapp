@@ -22,6 +22,10 @@ selectIngredientsForRecipe:
 SELECT * FROM Ingredients
 WHERE recipeId = ?;
 
+selectRecipeNameById:
+SELECT name FROM Recipes
+WHERE id = ?;
+
 insertRecipe:
 INSERT INTO Recipes (name, description)
 VALUES (?, ?);

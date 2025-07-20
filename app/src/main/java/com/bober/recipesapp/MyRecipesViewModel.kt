@@ -46,8 +46,11 @@ class MyRecipesViewModel internal constructor(private val database: Database) {
             try {
                 val ingredients = database.selectIngredientsByRecipeId(recipeId)
                 _state.value = _state.value.copy(ingredients = ingredients)
+                val recipeName = database.selectRecipeNameById(recipeId)
+                _state.value = _state.value.copy(recipeName = recipeName ?: "")
             } catch (e: Exception) {
                 _state.value = _state.value.copy(ingredients = emptyList())
+                _state.value = _state.value.copy(recipeName = "")
             }
         }
     }
@@ -88,7 +91,8 @@ data class RecipesScreenState(
     val isLoading: Boolean = false,
     val recipes: List<Recipe> = emptyList(),
     val selectedRecipe: Recipe? = null,
-    val ingredients: List<Ingredient> = emptyList()
+    val ingredients: List<Ingredient> = emptyList(),
+    val recipeName: String = ""
 )
 
 fun createMyRecipesViewModel(context: Context): MyRecipesViewModel {
@@ -96,4 +100,3 @@ fun createMyRecipesViewModel(context: Context): MyRecipesViewModel {
     val database = Database(databaseDriverFactory)
     return MyRecipesViewModel(database)
 }
-

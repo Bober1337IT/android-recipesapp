@@ -54,7 +54,7 @@ fun DetailScreen(
                     ) {
                         Column {
                             Text(
-                                "Recipe Details", style = MaterialTheme.typography.headlineLarge
+                                state.recipeName + ":" , style = MaterialTheme.typography.headlineLarge
                             )
                         }
                         Column {
