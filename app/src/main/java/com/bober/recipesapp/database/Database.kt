@@ -17,8 +17,8 @@ internal class Database(private val databaseDriverFactory: AndroidDatabaseDriver
         return dbQuery.selectIngredientsForRecipe(recipeId, ::mapIngredientsSelecting).executeAsList()
     }
 
-    internal fun selectRecipeNameById(id: Long): String? {
-        return dbQuery.selectRecipeNameById(id).executeAsOneOrNull()
+    internal fun selectRecipeById(id: Long): Recipe? {
+        return dbQuery.selectRecipeById(id, ::mapRecipeSelecting).executeAsOneOrNull()
     }
 
     internal fun insertRecipe(name: String, description: String?) {

@@ -54,7 +54,8 @@ fun DetailScreen(
                     ) {
                         Column {
                             Text(
-                                state.recipeName + ":" , style = MaterialTheme.typography.headlineLarge
+                                (state.selectedRecipe?.name ?: "Unknown") + ":",
+                                style = MaterialTheme.typography.headlineLarge
                             )
                         }
                         Column {
@@ -102,6 +103,12 @@ fun DetailScreen(
                                 text = "${ingredient.name}: ${ingredient.quantity} ${ingredient.unit}",
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                        item{
+                            Spacer(modifier = Modifier.padding(16.dp))
+                            Text(
+                                text = state.selectedRecipe?.description ?: ""
                             )
                         }
                     }

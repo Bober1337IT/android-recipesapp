@@ -45,12 +45,16 @@ class MyRecipesViewModel internal constructor(private val database: Database) {
         viewModelScope.launch {
             try {
                 val ingredients = database.selectIngredientsByRecipeId(recipeId)
-                _state.value = _state.value.copy(ingredients = ingredients)
-                val recipeName = database.selectRecipeNameById(recipeId)
-                _state.value = _state.value.copy(recipeName = recipeName ?: "")
+                val recipe = database.selectRecipeById(recipeId)
+                _state.value = _state.value.copy(
+                    ingredients = ingredients,
+                    selectedRecipe = recipe
+                )
             } catch (e: Exception) {
-                _state.value = _state.value.copy(ingredients = emptyList())
-                _state.value = _state.value.copy(recipeName = "")
+                _state.value = _state.value.copy(
+                    ingredients = emptyList(),
+                    selectedRecipe = null
+                )
             }
         }
     }
@@ -92,7 +96,6 @@ data class RecipesScreenState(
     val recipes: List<Recipe> = emptyList(),
     val selectedRecipe: Recipe? = null,
     val ingredients: List<Ingredient> = emptyList(),
-    val recipeName: String = ""
 )
 
 fun createMyRecipesViewModel(context: Context): MyRecipesViewModel {
