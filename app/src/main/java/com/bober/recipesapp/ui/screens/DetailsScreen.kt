@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +35,8 @@ fun DetailScreen(
     viewModel: MyRecipesViewModel, recipeId: Int?, onBack: () -> Unit
 ) {
     val state by viewModel.state
+
+    var editMode by remember { mutableStateOf(false) }
 
     LaunchedEffect(recipeId) {
         recipeId?.let {
@@ -50,23 +53,29 @@ fun DetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .padding(vertical = 8.dp)
                     ) {
-                        Column {
-                            Text(
-                                (state.selectedRecipe?.name ?: "Unknown") + ":",
-                                style = MaterialTheme.typography.headlineLarge
+                        Text(
+                            (state.selectedRecipe?.name ?: "Unknown") + ":",
+                            style = MaterialTheme.typography.headlineLarge
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        IconButton(
+                            onClick = {
+                                if (state.selectedRecipe != null) {
+                                    editMode = !editMode
+                                    if (editMode) {
+                                    } else {
+                                    }
+                                }
+                            }, enabled = state.selectedRecipe != null
+                        ) {
+                            Icon(
+                                imageVector = if (editMode) Icons.Default.Check else Icons.Default.Edit,
+                                contentDescription = if (editMode) "Save Changes" else "Edit Recipe"
                             )
-                        }
-                        Column {
-                            IconButton(
-                                onClick = onBack
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Back",
-                                )
-                            }
                         }
                     }
                 })
@@ -105,10 +114,12 @@ fun DetailScreen(
                                 modifier = Modifier.padding(16.dp)
                             )
                         }
-                        item{
+                        item {
                             Spacer(modifier = Modifier.padding(16.dp))
                             Text(
-                                text = state.selectedRecipe?.description ?: ""
+                                text = state.selectedRecipe?.description ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(16.dp)
                             )
                         }
                     }
