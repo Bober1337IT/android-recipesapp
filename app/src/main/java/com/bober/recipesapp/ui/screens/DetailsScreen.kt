@@ -1,5 +1,6 @@
 package com.bober.recipesapp.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import com.bober.recipesapp.ui.theme.RecipesAppTheme
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
@@ -108,11 +110,23 @@ fun DetailScreen(
                         modifier = Modifier.padding(paddingValues)
                     ) {
                         items(state.ingredients, key = { it.id }) { ingredient ->
-                            Text(
-                                text = "${ingredient.name}: ${ingredient.quantity} ${ingredient.unit}",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.padding(16.dp)
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable(onClick = {viewModel.toggleIngredientChecked(ingredient.id)})
+                            ) {
+                                Checkbox(
+                                    checked = ingredient.checked,
+                                    onCheckedChange = {
+                                        viewModel.toggleIngredientChecked(ingredient.id)
+                                    },
+                                )
+                                Text(
+                                    text = "${ingredient.name}: ${ingredient.quantity} ${ingredient.unit}",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                            }
                         }
                         item {
                             Spacer(modifier = Modifier.padding(16.dp))

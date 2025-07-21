@@ -1,18 +1,22 @@
 package com.bober.recipesapp
 
-import android.content.Context
+import android.app.Application
 import androidx.compose.runtime.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.bober.recipesapp.database.AndroidDatabaseDriverFactory
 import com.bober.recipesapp.database.Database
 import com.bober.recipesapp.entity.Ingredient
 import com.bober.recipesapp.entity.Recipe
 import kotlinx.coroutines.*
 
-class MyRecipesViewModel internal constructor(private val database: Database) {
+class MyRecipesViewModel(application: Application) : AndroidViewModel(application) {
+    private val database = Database(AndroidDatabaseDriverFactory(application.applicationContext))
+
     private val _state = mutableStateOf(RecipesScreenState())
     val state: State<RecipesScreenState> = _state
 
-    private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val checkedState = mutableStateMapOf<Long, Boolean>()
 
     init {
         _state.value = _state.value.copy(isLoading = true)
@@ -44,7 +48,9 @@ class MyRecipesViewModel internal constructor(private val database: Database) {
     fun loadIngredients(recipeId: Long) {
         viewModelScope.launch {
             try {
-                val ingredients = database.selectIngredientsByRecipeId(recipeId)
+                val ingredients = database.selectIngredientsByRecipeId(recipeId).map {
+                    it.copy(checked = checkedState[it.id] ?: false)
+                }
                 val recipe = database.selectRecipeById(recipeId)
                 _state.value = _state.value.copy(
                     ingredients = ingredients,
@@ -82,6 +88,16 @@ class MyRecipesViewModel internal constructor(private val database: Database) {
         }
     }
 
+    fun toggleIngredientChecked(ingredientId: Long) {
+        val current = checkedState[ingredientId] ?: false
+        checkedState[ingredientId] = !current
+        _state.value = _state.value.copy(
+            ingredients = _state.value.ingredients.map {
+                if (it.id == ingredientId) it.copy(checked = !current) else it.copy(checked = checkedState[it.id] ?: it.checked)
+            }
+        )
+    }
+
     // do testow
     fun deleteAllRecipes() {
         viewModelScope.launch {
@@ -97,9 +113,3 @@ data class RecipesScreenState(
     val selectedRecipe: Recipe? = null,
     val ingredients: List<Ingredient> = emptyList(),
 )
-
-fun createMyRecipesViewModel(context: Context): MyRecipesViewModel {
-    val databaseDriverFactory = AndroidDatabaseDriverFactory(context)
-    val database = Database(databaseDriverFactory)
-    return MyRecipesViewModel(database)
-}

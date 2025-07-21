@@ -5,5 +5,6 @@ data class Ingredient(
     val recipeId: Long,
     val name: String,
     val quantity: Double,
-    val unit: String
+    val unit: String,
+    var checked : Boolean = false
 )
