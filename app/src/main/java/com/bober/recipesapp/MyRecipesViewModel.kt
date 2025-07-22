@@ -16,14 +16,11 @@ class MyRecipesViewModel(application: Application) : AndroidViewModel(applicatio
     private val _state = mutableStateOf(RecipesScreenState())
     val state: State<RecipesScreenState> = _state
 
-    private val checkedState = mutableStateMapOf<Long, Boolean>()
+    val checkedState = mutableStateMapOf<Long, Boolean>()
 
     init {
         _state.value = _state.value.copy(isLoading = true)
         viewModelScope.launch {
-            //database.insertRecipe("Pizza Margherita", "Classic Italian pizza") //test
-            //database.insertRecipe("Spaghetti Carbonara", "Traditional Roman dish") //test
-            println(">>> init ")
             loadRecipes()
         }
     }
@@ -66,7 +63,6 @@ class MyRecipesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun deleteRecipe(recipeId: Long) {
-        println(">>> Usuwam przepis o id = $recipeId")
         viewModelScope.launch {
             try {
                 database.deleteRecipe(recipeId)
@@ -80,7 +76,7 @@ class MyRecipesViewModel(application: Application) : AndroidViewModel(applicatio
     fun addRecipe(recipeName: String) {
         viewModelScope.launch {
             try {
-                database.insertRecipe(recipeName,"")
+                database.insertRecipe(recipeName, "")
                 loadRecipes()
             } catch (e: Exception) {
                 println(">>> Błąd przy dodawaniu przepisu: ${e.message}")
@@ -93,12 +89,18 @@ class MyRecipesViewModel(application: Application) : AndroidViewModel(applicatio
         checkedState[ingredientId] = !current
         _state.value = _state.value.copy(
             ingredients = _state.value.ingredients.map {
-                if (it.id == ingredientId) it.copy(checked = !current) else it.copy(checked = checkedState[it.id] ?: it.checked)
+                if (it.id == ingredientId) it.copy(checked = !current) else it.copy(checked = checkedState[it.id] ?: false)
             }
         )
     }
 
-    // do testow
+    fun clearIngredientChecked() {
+        checkedState.clear()
+        _state.value = _state.value.copy(
+            ingredients = _state.value.ingredients.map { it.copy(checked = false) }
+        )
+    }
+
     fun deleteAllRecipes() {
         viewModelScope.launch {
             database.deleteAllRecipes()
@@ -106,6 +108,7 @@ class MyRecipesViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 }
+
 
 data class RecipesScreenState(
     val isLoading: Boolean = false,

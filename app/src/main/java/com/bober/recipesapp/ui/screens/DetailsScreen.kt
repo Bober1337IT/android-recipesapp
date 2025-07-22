@@ -1,5 +1,6 @@
 package com.bober.recipesapp.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,11 @@ fun DetailScreen(
         recipeId?.let {
             viewModel.loadIngredients(it.toLong())
         }
+    }
+
+    BackHandler {
+        viewModel.clearIngredientChecked()
+        onBack()
     }
 
     RecipesAppTheme {
